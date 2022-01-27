@@ -28,11 +28,23 @@ public class Game extends JPanel implements MouseListener {
 	public static final int PREF_H = 696;
 
 	public ArrayList<Circle> circles = new ArrayList<Circle>();
+	
+	//player clicked circle
+	
+	boolean clicked = false;
+	int circleX;
+	int circleY;
+	int circleR;
+	Color circleColor = (new Color(rand(0,255), rand(0,255), rand(0,255), 127));
 
 	public Timer timer = new Timer(1000 / 60, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			repaint();
-			
+			if(clicked) {
+				circleR++;
+				circleX--;
+				circleY--;
+			}
 		}
 	});
 	
@@ -63,6 +75,11 @@ public class Game extends JPanel implements MouseListener {
 		g2.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+
+		if(clicked) {
+			g2.setColor(circleColor);
+			g2.fillOval(circleX + circleR / 2, circleY + circleR / 2, circleR, circleR);
+		}
 		
 		for(int i = 0; i < circles.size(); i++) {
 			circles.get(i).draw(g2);
@@ -107,14 +124,11 @@ public class Game extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		circles.clear();
-		for(int i = 0; i < 10; i++) {
-			circles.add(new Circle(rand(100, PREF_W - 100),
-					rand(100, PREF_H - 100),
-					100,
-					new Color(rand(0,255), rand(0,255), rand(0,255), 127), rand(-180, 180)));
-		}
+		System.out.println("OMG YOU JUST CLICKED WTF");
+		circleX = e.getX();
+		circleY = e.getY();
+		circleR = 0;
+		clicked = true;
 		repaint();
 	}
 
