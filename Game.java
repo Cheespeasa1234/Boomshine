@@ -48,7 +48,10 @@ public class Game extends JPanel implements MouseListener {
 			circles.add(new Circle(rand(100, PREF_W - 100),
 					rand(100, PREF_H - 100),
 					100,
-					new Color(rand(0,255), rand(0,255), rand(0,255), 127), 1, 1));
+					new Color(rand(0,255), rand(0,255), rand(0,255), 127), rand(-180, 180)));
+			if(circles.get(i).dx == 0 && circles.get(i).dy == 0) {
+				circles.get(i).dx = 1;
+			}
 		}
 	}
 
@@ -68,6 +71,10 @@ public class Game extends JPanel implements MouseListener {
 	
 	public int rand(int min, int max) {
 		return (int) Math.floor(Math.random()*(max-min+1)+min);
+	}
+	
+	public double drand(int min, int max) {
+		return Math.random()*(max-min+1)+min;
 	}
 
 	/** ******* METHODS FOR INITIALLY CREATING THE JFRAME AND JPANEL *********/
@@ -106,7 +113,7 @@ public class Game extends JPanel implements MouseListener {
 			circles.add(new Circle(rand(100, PREF_W - 100),
 					rand(100, PREF_H - 100),
 					100,
-					new Color(rand(0,255), rand(0,255), rand(0,255), 127), 1, 1));
+					new Color(rand(0,255), rand(0,255), rand(0,255), 127), rand(-180, 180)));
 		}
 		repaint();
 	}
