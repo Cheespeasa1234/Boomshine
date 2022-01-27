@@ -47,11 +47,11 @@ public class Circle {
 	}
 	
 	public static boolean colliding(int x1, int y1, int r1, int x2, int y2, int r2) {
-		return dist(x1, y1, x2, y2) <= r1 + r2;
+		return dist(x1, y1, x2, y2) <= (r1 + r2) / 2;
 	}
 	
 	public static boolean colliding(Point a, int r1, Point b, int r2) {
-		return dist(a, b) < r1 + r2;
+		return dist(a, b) < (r1 + r2) / 2;
 	}
 	
 	void draw(Graphics2D g2) {

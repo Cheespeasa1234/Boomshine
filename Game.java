@@ -94,8 +94,10 @@ public class Game extends JPanel implements MouseListener {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-
+		g2.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		
 		if (clicked) {
 			g2.setColor(circleColor);
 			g2.fillOval(circleX - circleR / 2,circleY - circleR / 2,circleR,circleR);
