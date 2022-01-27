@@ -37,36 +37,40 @@ public class Game extends JPanel implements MouseListener {
 	public static int circleX = 100000;
 	public static int circleY = 100000;
 	public static int circleR = 0;
-	
+
 	Color circleColor = (new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127));
-	
+
 	public static int maxRadius = 150;
 
 	public Timer timer = new Timer(1000 / 60, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			repaint();
-			if(clicked && circleR < maxRadius && !deploded) {
+			if (clicked && circleR < maxRadius && !deploded) {
 				circleR++;
 			}
-			
-			if(circleR == maxRadius) {
+
+			if (circleR == maxRadius) {
 				deploded = true;
 			}
-			
-			if(deploded) {
+
+			if (deploded) {
 				circleR--;
-				if(circleR <= 0) {
+				if (circleR <= 0) {
 					clicked = false;
 					deploded = false;
 				}
 			}
-			
-			if(clicked) {
-				for(int i = 0; i < circles.size(); i++) {
-					if(Circle.colliding(new Point(circleX + circleR / 2, circleY + circleR / 2), circleR, new Point(circles.get(i).x + circles.get(i).radius / 2, circles.get(i).y + circles.get(i).radius / 2), circles.get(i).radius)) {
+
+			if (clicked) {
+				for (int i = 0; i < circles.size(); i++) {
+					if (Circle.colliding(new Point(circleX + circleR / 2, circleY + circleR / 2), circleR,
+							new Point(circles.get(i).x + circles.get(i).radius / 2,
+									circles.get(i).y + circles.get(i).radius / 2),
+							circles.get(i).radius)) {
 						circles.get(i).dx = 0;
 						circles.get(i).dy = 0;
 					}
+
 				}
 			}
 		}
@@ -85,6 +89,7 @@ public class Game extends JPanel implements MouseListener {
 					new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), rand(-180, 180)));
 			if (circles.get(i).dx == 0 && circles.get(i).dy == 0) {
 				circles.get(i).dx = 1;
+				circles.get(i).dy = 1;
 			}
 		}
 	}
@@ -94,13 +99,11 @@ public class Game extends JPanel implements MouseListener {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setRenderingHint(
-		        RenderingHints.KEY_TEXT_ANTIALIASING,
-		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 		if (clicked) {
 			g2.setColor(circleColor);
-			g2.fillOval(circleX - circleR / 2,circleY - circleR / 2,circleR,circleR);
+			g2.fillOval(circleX - circleR / 2, circleY - circleR / 2, circleR, circleR);
 			g2.setColor(Color.BLACK);
 			g2.setStroke(new BasicStroke(3));
 			g2.drawOval(circleX - maxRadius / 2, circleY - maxRadius / 2, maxRadius, maxRadius);
@@ -148,7 +151,7 @@ public class Game extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		System.out.println("OMG YOU JUST CLICKED WTF");
-		if(circleR == 0) {
+		if (circleR == 0) {
 			circleX = e.getX();
 			circleY = e.getY();
 			circleR = 0;

@@ -29,7 +29,7 @@ public class Circle {
 		this.y = center.y;
 		
 		//generate target point
-		int speed = 10;
+		int speed = 5;
 		
 		//cos and sin
 		// dx = speed * cos of angle
@@ -63,6 +63,19 @@ public class Circle {
 		
 		x = center.x;
 		y = center.y;
+		
+		for(int i = 0; i < Game.circles.size(); i++) {
+			Circle current = Game.circles.get(i);
+			if(colliding(current.center, current.radius, this.center, this.radius)) {
+				if(this.dx == 0 && this.dy == 0) {
+					Game.circles.get(i).dx = 0;
+					Game.circles.get(i).dy = 0;
+				} else if(current.dx == 0 && current.dy == 0) {
+					this.dx = 0;
+					this.dy = 0;
+				}
+			}
+		}
 		
 		if(dx == 0 && dy == 0) {
 			
