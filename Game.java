@@ -37,11 +37,13 @@ public class Game extends JPanel implements MouseListener {
 	public static int circleX = 100000;
 	public static int circleY = 100000;
 	public static int circleR = 0;
-
+	public static int maxRadius = 150;
 	Color circleColor = (new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127));
 
-	public static int maxRadius = 150;
-
+	//player scores i guess
+	public static int circlesExploded = 0;
+	public int timesClicked = 0;
+	
 	public Timer timer = new Timer(1000 / 60, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			repaint();
@@ -88,6 +90,7 @@ public class Game extends JPanel implements MouseListener {
 			circles.add(new Circle(rand(100, PREF_W - 100), rand(100, PREF_H - 100), 100,
 					new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), rand(-180, 180)));
 			if (circles.get(i).dx == 0 && circles.get(i).dy == 0) {
+				circlesExploded++;
 				circles.get(i).dx = 1;
 				circles.get(i).dy = 1;
 			}
@@ -101,6 +104,10 @@ public class Game extends JPanel implements MouseListener {
 
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+		String scoreMessage = "Score: " + (circlesExploded * 10 - timesClicked * 10);
+		g2.setFont(new Font("Monato", Font.PLAIN, 30));
+		g2.drawString(scoreMessage, PREF_W / 2 - g2.getFontMetrics().stringWidth(scoreMessage) / 2, 100);
+		
 		if (clicked) {
 			g2.setColor(circleColor);
 			g2.fillOval(circleX - circleR / 2, circleY - circleR / 2, circleR, circleR);
@@ -152,6 +159,7 @@ public class Game extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		System.out.println("OMG YOU JUST CLICKED WTF");
 		if (circleR == 0) {
+			timesClicked++;
 			circleX = e.getX();
 			circleY = e.getY();
 			circleR = 0;

@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 public class Circle {
 	
 	boolean deploded = false;
+	boolean scored = false;
 	
 	public int radius;
 	public Point center;
@@ -35,8 +36,8 @@ public class Circle {
 		// dx = speed * cos of angle
 		// dy = ||      sin
 		
-		dx = speed * Math.cos(angle);
-		dy = speed * Math.sin(angle);
+		this.dx = speed * Math.cos(angle);
+		this.dy = speed * Math.sin(angle);
 	}
 	
 	public static double dist(int x1, int y1, int x2, int y2) {
@@ -67,10 +68,14 @@ public class Circle {
 		for(int i = 0; i < Game.circles.size(); i++) {
 			Circle current = Game.circles.get(i);
 			if(colliding(current.center, current.radius, this.center, this.radius)) {
-				if(this.dx == 0 && this.dy == 0) {
+				if(this.dx == 0 && this.dy == 0 && this.radius >= 5) {
+					if(!scored) Game.circlesExploded++;
+					scored = true;
 					Game.circles.get(i).dx = 0;
 					Game.circles.get(i).dy = 0;
-				} else if(current.dx == 0 && current.dy == 0) {
+				} else if(current.dx == 0 && current.dy == 0 && current.radius >= 5) {
+					if(!scored) Game.circlesExploded++;
+					scored = true;
 					this.dx = 0;
 					this.dy = 0;
 				}
