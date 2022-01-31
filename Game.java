@@ -16,7 +16,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.event.MouseEvent;
 
 //Honors Computer Science - Mr. Uhl
@@ -29,7 +32,8 @@ public class Game extends JPanel implements MouseListener {
 	public static final int PREF_H = 696;
 
 	public static ArrayList<Circle> circles = new ArrayList<Circle>();
-	public static ArrayList<Circle> blownUpCircles = new ArrayList<Circle>();
+	public static Map<Integer, Integer> levels = new HashMap<Integer, Integer>();
+	public static ArrayList<TrajPoint> trajectories = new ArrayList<TrajPoint>();
 
 	// player clicked circle
 	public boolean clicked = false;
@@ -40,13 +44,28 @@ public class Game extends JPanel implements MouseListener {
 	public static int maxRadius = 150;
 	Color circleColor = (new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127));
 
-	//player scores i guess
+	public static int score = 0;
+	public static int visibleCircles = 0;
 	public static int circlesExploded = 0;
-	public int timesClicked = 0;
-	
+	public static int timesClicked = 0;
+	public static int level = 1;
+
 	public Timer timer = new Timer(1000 / 60, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+
+			if (visibleCircles == levels.get(level) && circleR == 0) {
+
+				visibleCircles = 0;
+				circles.clear();
+				level++;
+				for (int i = 0; i < levels.get(level); i++) {
+					circles.add(new Circle(rand(100, PREF_W - 100), rand(100, PREF_H - 100), 100,
+							new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), 10 + drand(0, 2)));
+				}
+			}
+
 			repaint();
+
 			if (clicked && circleR < maxRadius && !deploded) {
 				circleR++;
 			}
@@ -80,13 +99,25 @@ public class Game extends JPanel implements MouseListener {
 
 	// Class constructor BOB tHE BUILDER CAN hE FIX IT?????T?T??/
 	public Game() {
+
 		this.setFocusable(true);
 		this.setBackground(Color.WHITE);
 		this.addMouseListener(this);
 
 		timer.start();
 
-		for (int i = 0; i < 10; i++) {
+		levels.put(1, 100);
+		levels.put(2, 15);
+		levels.put(3, 23);
+		levels.put(4, 40);
+		levels.put(5, 58);
+		levels.put(6, 70);
+		levels.put(7, 80);
+		levels.put(8, 95);
+		levels.put(9, 100);
+		levels.put(10, 120);
+
+		for (int i = 0; i < levels.get(level); i++) {
 			circles.add(new Circle(rand(100, PREF_W - 100), rand(100, PREF_H - 100), 100,
 					new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), rand(-180, 180)));
 			if (circles.get(i).dx == 0 && circles.get(i).dy == 0) {
@@ -95,6 +126,7 @@ public class Game extends JPanel implements MouseListener {
 				circles.get(i).dy = 1;
 			}
 		}
+
 	}
 
 	// The method used to add graphical images to the panel
@@ -107,7 +139,7 @@ public class Game extends JPanel implements MouseListener {
 		String scoreMessage = "Score: " + (circlesExploded * 10 - timesClicked * 10);
 		g2.setFont(new Font("Monato", Font.PLAIN, 30));
 		g2.drawString(scoreMessage, PREF_W / 2 - g2.getFontMetrics().stringWidth(scoreMessage) / 2, 100);
-		
+
 		if (clicked) {
 			g2.setColor(circleColor);
 			g2.fillOval(circleX - circleR / 2, circleY - circleR / 2, circleR, circleR);
@@ -118,6 +150,13 @@ public class Game extends JPanel implements MouseListener {
 
 		for (int i = 0; i < circles.size(); i++) {
 			circles.get(i).draw(g2);
+		}
+		for (int i = 0; i < trajectories.size(); i++) {
+			TrajPoint p = trajectories.get(i);
+			g2.setColor(new Color(100, 100, 100, p.alpha));
+			g2.fillOval(p.p.x, p.p.y, 10, 10);
+			p.alpha -= 5;
+			if(p.alpha == 0) trajectories.remove(i);
 		}
 	}
 

@@ -2,11 +2,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 
 public class Circle {
 	
 	boolean deploded = false;
 	boolean scored = false;
+	boolean announcedDeath = false;
 	
 	public int radius;
 	public Point center;
@@ -19,12 +21,12 @@ public class Circle {
 	public double dx = 0;
 	public double dy = 0;
 	
-	Circle(int x, int y, int r, Color c, int angle) {
+	Circle(int x, int y, int r, Color c, double radians) {
 		this.radius = r;
 		this.center = new Point(x,y);
 		this.color = c;
-		this.angle = Math.toRadians(angle);
-		this.slope = Math.tan(angle);
+		this.angle = radians;
+		this.slope = Math.atan(angle) + 0.3;
 		
 		this.x = center.x;
 		this.y = center.y;
@@ -64,6 +66,11 @@ public class Circle {
 		
 		x = center.x;
 		y = center.y;
+		
+		if(!announcedDeath && radius <= 5) {
+			Game.visibleCircles--;
+			announcedDeath = true;
+		}
 		
 		for(int i = 0; i < Game.circles.size(); i++) {
 			Circle current = Game.circles.get(i);
@@ -105,6 +112,7 @@ public class Circle {
 		dy = -dy;
 		g2.setColor(color);
 		g2.fillOval(x - radius / 2,y - radius / 2,radius,radius);
+		Game.trajectories.add(new TrajPoint(new Point(x,y), 255));
 	}
 	
 }
