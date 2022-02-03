@@ -60,7 +60,7 @@ public class Game extends JPanel implements MouseListener {
 				level++;
 				for (int i = 0; i < levels.get(level); i++) {
 					circles.add(new Circle(rand(100, PREF_W - 100), rand(100, PREF_H - 100), 100,
-							new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), 10 + drand(0, 2)));
+							new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), 10 + rand(0, 360)));
 				}
 			}
 
@@ -106,7 +106,7 @@ public class Game extends JPanel implements MouseListener {
 
 		timer.start();
 
-		levels.put(1, 100);
+		levels.put(1, 10);
 		levels.put(2, 15);
 		levels.put(3, 23);
 		levels.put(4, 40);
