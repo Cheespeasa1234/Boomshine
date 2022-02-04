@@ -16,7 +16,6 @@ public class Circle {
 	public Color color;
 
 	public double angle = 0;
-	public double slope;
 
 	public double dx = 0;
 	public double dy = 0;
@@ -26,12 +25,11 @@ public class Circle {
 		this.center = new Point(x, y);
 		this.color = c;
 		this.angle = angle;
-		this.slope = Math.atan(Math.toRadians(angle));
-
+		
 		this.x = center.x;
 		this.y = center.y;
 
-		System.out.println("I was initialized with DX: " + dx + ", DY: " + dy + ".");
+		
 		
 		// generate target point
 		int speed = 5;
@@ -40,8 +38,17 @@ public class Circle {
 		// dx = speed * cos of angle
 		// dy = || sin
 
-		this.dx = speed * Math.cos(Math.toRadians(angle));
-		this.dy = speed * Math.sin(Math.toRadians(angle));
+		//sohcahtoa
+		//sin = o/h
+		//cos = a/h
+		//tan = o/a
+		
+		dx = Math.cos(angle) * speed;
+		dy = Math.sqrt(speed * speed - dx * dx);
+		
+		System.out.println("I was initialized with angle: " + angle);
+		System.out.println("I was initialized with DX: " + dx + ", DY: " + dy + ".");
+		
 	}
 
 	public static double dist(int x1, int y1, int x2, int y2) {
@@ -61,10 +68,8 @@ public class Circle {
 	}
 
 	void draw(Graphics2D g2) {
-
-		Rectangle bounds = new Rectangle(0, 0, Game.PREF_W, Game.PREF_H);
 		
-		System.out.println("DX: " + dx + ". DY: " + dy + ".");
+		Rectangle bounds = new Rectangle(0, 0, Game.PREF_W, Game.PREF_H);
 		
 		center.x += dx;
 		center.y += dy;
