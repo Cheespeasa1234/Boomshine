@@ -6,13 +6,15 @@ import java.awt.geom.Point2D;
 
 public class Circle {
 
+	public static int speed = 5;
+	
 	boolean deploded = false;
 	boolean scored = false;
 	boolean announcedDeath = false;
 
 	public int radius;
 	public Point center;
-	public int x, y;
+	public double x, y;
 	public Color color;
 
 	public double angle = 0;
@@ -20,7 +22,12 @@ public class Circle {
 	public double dx = 0;
 	public double dy = 0;
 
+	public int rand(int min, int max) {
+		return (int) Math.floor(Math.random() * (max - min + 1) + min);
+	}
+	
 	Circle(int x, int y, int r, Color c, double angle) {
+		
 		this.radius = r;
 		this.center = new Point(x, y);
 		this.color = c;
@@ -28,12 +35,12 @@ public class Circle {
 		
 		this.x = center.x;
 		this.y = center.y;
-
 		
+		if(rand(1,2) == 1) {
+			dy = -dy;
+		}
 		
 		// generate target point
-		int speed = 5;
-
 		// cos and sin
 		// dx = speed * cos of angle
 		// dy = || sin
@@ -45,6 +52,17 @@ public class Circle {
 		
 		dx = Math.cos(angle) * speed;
 		dy = Math.sqrt(speed * speed - dx * dx);
+		
+		if(angle >= 90 && angle < 180) {
+			dx = -dx;
+		}
+		if(angle >= 180 && angle < 270) {
+			dx = -dx;
+			dy = -dy;
+		}
+		if(angle >= 270 && angle < 360) {
+			dy = -dy;
+		}
 		
 		System.out.println("I was initialized with angle: " + angle);
 		System.out.println("I was initialized with DX: " + dx + ", DY: " + dy + ".");
@@ -120,20 +138,19 @@ public class Circle {
 
 		if ((center.x - radius + dx < 0 - radius / 2)) {
 			dx = -dx;
-			center.x += 1;
+			center.x += speed;
 		} else if (center.x + radius + dx > bounds.width + radius / 2) {
 			dx = -dx;
-			center.x -= 1;
+			center.x -= speed;
 		} else if (center.y - radius + dy < 0 - radius / 2) {
 			dy = -dy;
-			center.y += 1;
+			center.y += speed;
 		} else if (center.y + radius + dy > bounds.height + radius / 2) {			
 			dy = -dy;
-			center.y -= 1;
+			center.y -= speed;
 		}
 		g2.setColor(color);
-		g2.fillOval(x - radius / 2,y - radius / 2,radius,radius);
-		Game.trajectories.add(new TrajPoint(new Point(x, y), 255));
+		g2.fillOval((int) x - radius / 2,(int) y - radius / 2,radius,radius);
 	}
 
 }

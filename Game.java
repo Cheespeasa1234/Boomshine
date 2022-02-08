@@ -33,8 +33,7 @@ public class Game extends JPanel implements MouseListener {
 
 	public static ArrayList<Circle> circles = new ArrayList<Circle>();
 	public static Map<Integer, Integer> levels = new HashMap<Integer, Integer>();
-	public static ArrayList<TrajPoint> trajectories = new ArrayList<TrajPoint>();
-
+	
 	// player clicked circle
 	public boolean clicked = false;
 	public boolean deploded = false;
@@ -60,7 +59,7 @@ public class Game extends JPanel implements MouseListener {
 				level++;
 				for (int i = 0; i < levels.get(level); i++) {
 					circles.add(new Circle(rand(100, PREF_W - 100), rand(100, PREF_H - 100), 100,
-							new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), 10 + rand(0, 90)));
+							new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), rand(1, 359)));
 				}
 			}
 
@@ -85,8 +84,8 @@ public class Game extends JPanel implements MouseListener {
 			if (clicked) {
 				for (int i = 0; i < circles.size(); i++) {
 					if (Circle.colliding(new Point(circleX + circleR / 2, circleY + circleR / 2), circleR,
-							new Point(circles.get(i).x + circles.get(i).radius / 2,
-									circles.get(i).y + circles.get(i).radius / 2),
+							new Point((int) circles.get(i).x + circles.get(i).radius / 2,
+									(int) circles.get(i).y + circles.get(i).radius / 2),
 							circles.get(i).radius)) {
 						circles.get(i).dx = 0;
 						circles.get(i).dy = 0;
@@ -119,11 +118,9 @@ public class Game extends JPanel implements MouseListener {
 
 		for (int i = 0; i < levels.get(level); i++) {
 			circles.add(new Circle(rand(100, PREF_W - 100), rand(100, PREF_H - 100), 100,
-					new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), rand(-180, 180)));
+					new Color(rand(0, 255), rand(0, 255), rand(0, 255), 127), rand(1, 359)));
 			if (circles.get(i).dx == 0 && circles.get(i).dy == 0) {
 				circlesExploded++;
-				circles.get(i).dx = 1;
-				circles.get(i).dy = 1;
 			}
 		}
 
@@ -150,13 +147,6 @@ public class Game extends JPanel implements MouseListener {
 
 		for (int i = 0; i < circles.size(); i++) {
 			circles.get(i).draw(g2);
-		}
-		for (int i = 0; i < trajectories.size(); i++) {
-			TrajPoint p = trajectories.get(i);
-			g2.setColor(new Color(100, 100, 100, p.alpha));
-			g2.fillOval(p.p.x, p.p.y, 10, 10);
-			p.alpha -= 5;
-			if(p.alpha == 0) trajectories.remove(i);
 		}
 	}
 
